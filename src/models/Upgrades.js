@@ -1,4 +1,4 @@
-export class ClickUpgrades {
+export class ClickUpgrade {
   constructor(data) {
     this.id = data.id
     this.name = data.name
@@ -8,7 +8,7 @@ export class ClickUpgrades {
   }
 }
 
-export class AutoUpgrades {
+export class AutoUpgrade {
   constructor(data) {
     this.id = data.id
     this.name = data.name
