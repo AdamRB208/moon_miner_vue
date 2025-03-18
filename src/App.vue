@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { AppState } from './AppState.js'
 import { mineService } from './services/MineService.js';
 import { ClickUpgrade, AutoUpgrade } from './models/Upgrades.js';
+import { ref } from 'vue';
 
 
 const ore = computed(() => AppState.ore)
@@ -14,6 +15,26 @@ const autoUpgrades = computed(() => AppState.autoUpgrades)
 
 function mine() {
   mineService.increaseOre()
+  mineService.purchaseClickUpgrade()
+}
+
+function purchaseClickUpgrade(clickUpgrades) {
+  mineService.purchaseClickUpgrade(clickUpgrades)
+}
+
+function purchaseAutoUpgrade(ore) {
+  mineService.purchaseAutoUpgrade(ore)
+}
+
+const editableUpgradeData = ref({
+  price: '',
+  quantity: '',
+  mineAbility: ''
+})
+
+function updateData() {
+  mineService.purchaseClickUpgrade(editableUpgradeData.value)
+  editableUpgradeData.value.quantity = ''
 }
 
 //note create buttons to reflect names and prices for upgrade items.
@@ -51,28 +72,29 @@ function mine() {
     <section class="col">
       <div class="row">
         <div v-for="clickUpgrade in clickUpgrades" :key="clickUpgrade.name" class="col-md-3">
-          <button class="btn btn-outline-warning rounded" type="button">
+          <button @click="purchaseClickUpgrade(ore)" class="btn btn-outline-warning rounded" type="button">
             <div class="d-flex text-warning justify-content-center align-items-center pb-2 mb-4">
               {{ clickUpgrade.name }}
             </div>
           </button>
           <span class="d-flex text-warning justify-content-between">pickaxe price : {{ clickUpgrade.price }}</span>
-          <span class="d-flex text-warning justify-content-between">pickaxe quantity : {{ clickUpgrade.quantity
+          <span class="d-flex text-warning justify-content-between">pickaxe quantity
+            : {{ clickUpgrade.quantity
             }}</span>
           <span class="d-flex text-warning justify-content-between">pickaxe mine ability: {{ clickUpgrade.mineAbility
-            }}</span>
+          }}</span>
         </div>
         <div v-for="autoUpgrade in autoUpgrades" :key="autoUpgrade.name" class="col-md-3">
-          <button class="btn btn-outline-warning rounded" type="button">
+          <button @click="purchaseAutoUpgrade(clickUpgrades)" class="btn btn-outline-warning rounded" type="button">
             <div class="d-flex text-warning justify-content-center align-items-center pb-2 mb-4">
               {{ autoUpgrade.name }}
             </div>
           </button>
           <span class="d-flex text-warning justify-content-between">pickaxe price : {{ autoUpgrade.price }}</span>
-          <span class="d-flex text-warning justify-content-between">pickaxe quantity : {{ autoUpgrade.quantity
-            }}</span>
+          <span class="d-flex text-warning justify-content-between">pickaxe quantity
+            : {{ autoUpgrade.quantity }}</span>
           <span class="d-flex text-warning justify-content-between">pickaxe mine ability: {{ autoUpgrade.mineAbility
-            }}</span>
+          }}</span>
         </div>
       </div>
     </section>
@@ -85,6 +107,6 @@ function mine() {
 @import "./assets/scss/main.scss";
 
 body {
-  background-color: #5444c2;
+  background-color: #4c3db6;
 }
 </style>
